@@ -18,7 +18,7 @@ class CreateBooksTable extends Migration
             $table->string('name');
             $table->string('isbn');
             $table->unsignedBigInteger('user_id');
-            $table->string('cover_image');
+            $table->string('cover_image')->nullable(true);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

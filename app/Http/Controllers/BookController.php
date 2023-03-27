@@ -21,7 +21,7 @@ class BookController extends Controller
     {
         $books = Auth::user()->books;
 
-        return response(['books' => BookResource::collection($books), 'message' => 'Successful'], 200);
+        return response()->json(['books' => BookResource::collection($books), 'message' => 'Successful'], 200);
 
     }
 
@@ -78,7 +78,7 @@ class BookController extends Controller
 
         if($validator->fails()){
 
-            return response(['error' => $validator->errors(), 'Validation Error']);
+            return response()->json(['error' => $validator->errors(), 'Validation Error']);
 
         }
 
@@ -92,7 +92,7 @@ class BookController extends Controller
 
         $book = Book::create($data);
 
-        return response(['book' => new BookResource($book), 'message' => 'Success'], 200);
+        return response()->json(['book' => new BookResource($book), 'message' => 'Success'], 200);
 
     }
 
@@ -105,7 +105,7 @@ class BookController extends Controller
     public function show(Book $book)
     {
         
-        return response(['book' => new BookResource($book), 'message' => 'Success'], 200);
+        return response()->json(['book' => new BookResource($book), 'message' => 'Success'], 200);
     }
 
     /**
@@ -120,7 +120,7 @@ class BookController extends Controller
         
         $book->update($request->all());
 
-        return response(['book' => new BookResource($book), 'message' => 'Success'], 200);
+        return response()->json(['book' => new BookResource($book), 'message' => 'Success'], 200);
 
     }
 
@@ -134,6 +134,6 @@ class BookController extends Controller
     {
         $book->delete();
 
-        return response(['message' => 'Book deleted']);
+        return response()->json(['message' => 'Book deleted']);
     }
 }

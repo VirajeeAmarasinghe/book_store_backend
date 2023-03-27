@@ -80,19 +80,35 @@ class BookController extends Controller
 
             return response()->json(['error' => $validator->errors(), 'Validation Error']);
 
-        }
+        }        
 
-        $coverImage = time().'.'.$request->cover_image->extension();  
+        $completeFileName = $request->file('cover_image')->getClientOriginalName();
 
-        $request->cover_image->move(public_path('images'), $coverImage);
+        $fileNameOnly = pathinfo($completeFileName, PATHINFO_FILENAME);
 
-        $data['cover_image'] = $coverImage;
+        $extension = $request->file('cover_image')->getClientOriginalExtension();
 
-        $data['user_id'] = Auth::id();
+        $compPic = str_replace(' ', '_', $fileNameOnly).'_'.rand().'_'.time().'.'.$extension;
+
+        $path = $request->file('cover_image')->storeAs('public/cover_images', $compPic);
+        
+        $data['cover_image'] = $path;
+
+        $data['user_id'] = Auth::id();        
 
         $book = Book::create($data);
 
-        return response()->json(['book' => new BookResource($book), 'message' => 'Success'], 200);
+        if($book){
+
+            return response()->json(['status' => true, 'message' => 'Book saved successfully']);
+
+        } else {
+
+            return response()->json(['status' => false, 'message' => 'Something went wrong']);
+            
+        }
+
+        
 
     }
 
